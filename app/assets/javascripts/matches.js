@@ -19,7 +19,8 @@
 		.outerRadius(r);
 
 	var pie = d3.layout.pie()           //this will create arc data for us given a list of values
-		.value(function(d) { return d[valuekey]; });    //we must tell it out to access the value of each element in our data array
+		.value(function(d) { return d[valuekey]; })    //we must tell it out to access the value of each element in our data array
+		.sort(function(a,b) { return a.player < b.player; });
 
 		var arcs = vis.selectAll("g.slice")     //this selects all <g> elements with class slice (there aren't any yet)
 		.data(pie)                          //associate the generated pie data (an array of arcs, each having startAngle, endAngle and value properties) 

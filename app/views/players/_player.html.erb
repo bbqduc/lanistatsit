@@ -1,5 +1,5 @@
 <tr>
-	<td><%= player.name %></td>
+	<td><%= link_to(player.name, player) %></td>
 	<td><%= (player.sum_kills / player.num_matches.to_f).round(2) %></td>
 	<td><%= (player.sum_deaths / player.num_matches.to_f).round(2) %></td>
 	<td><%= (player.sum_assists / player.num_matches.to_f).round(2) %></td>

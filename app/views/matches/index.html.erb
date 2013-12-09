@@ -1,15 +1,3 @@
 <h1>All matches</h1>
 
-<table border=1>
-	<tr>
-	<th>Date</th>
-	<th>Tapiplayers</th>
-	</tr>
-
-	<% @matches.each do |m| %>
-	<tr>
-		<td> <%= link_to(m.starttime.to_s, m) %> </td>
-		<td> <%= m.tapiplayers %> </td>
-	</tr>
-	<% end %>
-</table>
+<%= render "matches" %>

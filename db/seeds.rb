@@ -45,6 +45,7 @@ end
 
 def UpdatePlayerSum player, mp
 	player.num_matches += 1
+	player.matches << mp.match
 	player.sum_herodamage += mp.herodamage
 	player.sum_towerdamage += mp.towerdamage
 	player.sum_gold += mp.goldspent + mp.finishgold
@@ -118,6 +119,7 @@ def InsertMatch match
 							   :radiant => isRadiant,
 							   :tfc => tfc
 		})
+		dbm.players << player
 		UpdatePlayerSum player, mp
 	end
 	dbm.tapiplayers = tapiplayers
