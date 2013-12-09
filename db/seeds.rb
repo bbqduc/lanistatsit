@@ -90,9 +90,6 @@ def InsertMatch match
 	end
 	m["players"].each do |p|
 		player = FindOrInsertPlayer(p["accountId"])
-		if player.accountid != 0
-			tapiplayers += 1
-		end
 		isRadiant = p["playerSlot"] < 128
 		teamkills = isRadiant ? radiantkills : direkills
 		tfc = teamkills == 0 ? 1.0 : (p["kills"] + p["assists"]) / teamkills.to_f
@@ -117,8 +114,13 @@ def InsertMatch match
 							   :herohealing => p["heroHealing"],
 							   :level => p["level"],
 							   :radiant => isRadiant,
+							   :win => isRadiant ? dbm.radiant_win : !dbm.radiant_win,
 							   :tfc => tfc
 		})
+		if player.accountid != 0
+			tapiplayers += 1
+			dbm.tapiwin = mp.win
+		end
 		dbm.players << player
 		UpdatePlayerSum player, mp
 	end
