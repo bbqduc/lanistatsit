@@ -1,0 +1,19 @@
+<h1>Player Averages</h1>
+
+<table border=1>
+	<tr>
+	<th>Player</th>
+	<th>Kills</th>
+	<th>Deaths</th>
+	<th>Assists</th>
+	<th>TFC</th>
+	<th>GPM</th>
+	<th>Hero Damage</th>
+	<th>Tower Damage</th>
+	<th>Games Played</th>
+	</tr>
+
+	<% @players.each do |p| %>
+		<%= render p %>
+	<% end %>
+</table>

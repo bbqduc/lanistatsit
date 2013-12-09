@@ -1,0 +1,64 @@
+<h2>Radiant</h2>
+<table border=2 class="basicstatstable">
+	<th class="namecell">Player</th>
+	<th class="namecell">Hero</th>
+	<th>Kills</th>
+	<th>Deaths</th>
+	<th>Assists</th>
+	<th>TFC</th>
+	<th>GPM</th>
+	<th>Hero Damage</th>
+	<th>Tower Damage</th>
+<% (0..4).each do |i| %>
+	<%= render match.match_participations[i] %>
+<% end %>
+</table>
+
+<h2>Dire</h2>
+<table border=2 class="basicstatstable">
+	<th class="namecell">Player</th>
+	<th class="namecell">Hero</th>
+	<th>Kills</th>
+	<th>Deaths</th>
+	<th>Assists</th>
+	<th>TFC</th>
+	<th>GPM</th>
+	<th>Hero Damage</th>
+	<th>Tower Damage</th>
+<% (5..9).each do |i| %>
+	<%= render match.match_participations[i] %>
+<% end %>
+</table>
+
+<div id="charts">
+
+<table>
+	<tr>
+			<td class="charttitle">Radiant Hero Damage Distribution</td>
+			<td class="charttitle">Dire Hero Damage Distribution</td>
+	</tr>
+	<tr>
+			<td class="chartsvg"><svg width=400 height=300 id="radiantdamagechart"></svg></td>
+			<td class="chartsvg"><svg width=400 height=300 id="diredamagechart"></svg></td>
+	</tr>
+
+	<tr>
+			<td class="charttitle">Radiant Tower Damage Distribution</td>
+			<td class="charttitle">Dire Tower Damage Distribution</td>
+	</tr>
+	<tr>
+			<td class="chartsvg"><svg width=400 height=300 id="radianttowerdamagechart"></svg></td>
+			<td class="chartsvg"><svg width=400 height=300 id="diretowerdamagechart"></svg></td>
+	</tr>
+
+	<tr>
+			<td class="charttitle">Radiant Gold Distribution</td>
+			<td class="charttitle">Dire Gold Distribution</td>
+	</tr>
+	<tr>
+			<td class="chartsvg"><svg width=400 height=300 id="radiantgoldpiechart"></svg></td>
+			<td class="chartsvg"><svg width=400 height=300 id="diregoldpiechart"></svg></td>
+	</tr>
+</table>
+
+</div>

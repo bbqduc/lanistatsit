@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 1
+  towerstatus_radiant: 1
+  towerstatus_dire: 1
+  barracksstatus_radiant: 1
+  barracksstatus_dire: 1
+  firstbloodtime: 1
+  gamemode: MyString
+  radiant_win: false
+  duration: 1
+  starttime: 2013-12-05 14:51:20
+  replayurl: MyString
+
+two:
+  id: 1
+  towerstatus_radiant: 1
+  towerstatus_dire: 1
+  barracksstatus_radiant: 1
+  barracksstatus_dire: 1
+  firstbloodtime: 1
+  gamemode: MyString
+  radiant_win: false
+  duration: 1
+  starttime: 2013-12-05 14:51:20
+  replayurl: MyString
