@@ -1,4 +1,4 @@
-<h2>Radiant</h2>
+<h2>Radiant <%= match.radiant_win ? "(Winner)" : "" %></h2>
 <table border=2 class="basicstatstable">
 	<th class="namecell">Player</th>
 	<th class="namecell">Hero</th>
@@ -14,7 +14,7 @@
 <% end %>
 </table>
 
-<h2>Dire</h2>
+<h2>Dire <%= match.radiant_win ? "" : "(Winner)"%></h2>
 <table border=2 class="basicstatstable">
 	<th class="namecell">Player</th>
 	<th class="namecell">Hero</th>

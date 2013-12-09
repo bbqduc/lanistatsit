@@ -53,5 +53,5 @@
 		drawPieChart(gon.damagechartdata["dire"], "gold", "#diregoldpiechart");
 	}
 
-$(document).on('ready page:load', ready);
+$(document).ready(ready);
 }).call(this)
