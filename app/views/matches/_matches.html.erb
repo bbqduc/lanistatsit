@@ -1,0 +1,16 @@
+
+<table border=1>
+	<tr>
+	<th>Date</th>
+	<th>Tapiplayers</th>
+	<th>Result</th>
+	</tr>
+
+	<% @matches.each do |m| %>
+	<tr>
+		<td> <%= link_to(m.starttime.to_s, m) %> </td>
+		<td> <%= m.tapiplayers %> </td>
+		<td class=<%= m.tapiwin ? "wincell" : "losscell"%>> <%= m.tapiwin ? "WIN" : "LOSS" %> </td>
+	</tr>
+	<% end %>
+</table>

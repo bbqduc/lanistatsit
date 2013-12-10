@@ -3,7 +3,7 @@ Hello::Application.routes.draw do
 
   resources :matches, only: [:index, :show]
   resources :players, only: [:index, :show]
-  root "welcome#index"
+  root "matches#index"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
