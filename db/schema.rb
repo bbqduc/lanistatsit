@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131209143738) do
+ActiveRecord::Schema.define(version: 20131211102113) do
 
   create_table "heros", force: true do |t|
     t.string   "name"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 20131209143738) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "tapiwin"
+    t.integer  "kills",                  default: 0
   end
 
   add_index "matches", ["matchid"], name: "index_matches_on_matchid", unique: true

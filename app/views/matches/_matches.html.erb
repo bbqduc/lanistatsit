@@ -4,6 +4,9 @@
 	<th>Date</th>
 	<th>Tapiplayers</th>
 	<th>Result</th>
+	<th>First Blood Time</th>
+	<th>Kills per Minute</th>
+	<th>Duration</th>
 	</tr>
 
 	<% @matches.each do |m| %>
@@ -11,6 +14,9 @@
 		<td> <%= link_to(m.starttime.to_s, m) %> </td>
 		<td> <%= m.tapiplayers %> </td>
 		<td class=<%= m.tapiwin ? "wincell" : "losscell"%>> <%= m.tapiwin ? "WIN" : "LOSS" %> </td>
+		<td> <%= '%02d%s%02d' % [m.firstbloodtime / 60, ":", m.firstbloodtime % 60] %></td>
+		<td> <%= (m.kills / (m.duration.to_f / 60.0)).round(2) %> </td>
+		<td> <%= '%02d%s%02d' % [m.duration / 60, ":", m.duration % 60] %></td>
 	</tr>
 	<% end %>
 </table>

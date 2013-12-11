@@ -122,6 +122,7 @@ def InsertMatch match
 			dbm.tapiwin = mp.win
 		end
 		dbm.players << player
+		dbm.kills += mp.kills
 		UpdatePlayerSum player, mp
 	end
 	dbm.tapiplayers = tapiplayers
