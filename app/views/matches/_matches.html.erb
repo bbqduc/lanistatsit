@@ -6,6 +6,7 @@
 	<th>Result</th>
 	<th>First Blood Time</th>
 	<th>Kills per Minute</th>
+	<th>Average GPM</th>
 	<th>Duration</th>
 	</tr>
 
@@ -16,6 +17,7 @@
 		<td class=<%= m.tapiwin ? "wincell" : "losscell"%>> <%= m.tapiwin ? "WIN" : "LOSS" %> </td>
 		<td> <%= '%02d%s%02d' % [m.firstbloodtime / 60, ":", m.firstbloodtime % 60] %></td>
 		<td> <%= (m.kills / (m.duration.to_f / 60.0)).round(2) %> </td>
+		<td> <%= m.avg_gpm.to_s %> </td>
 		<td> <%= '%02d%s%02d' % [m.duration / 60, ":", m.duration % 60] %></td>
 	</tr>
 	<% end %>

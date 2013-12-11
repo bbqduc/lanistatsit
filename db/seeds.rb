@@ -123,9 +123,11 @@ def InsertMatch match
 		end
 		dbm.players << player
 		dbm.kills += mp.kills
+		dbm.avg_gpm += mp.gpm
 		UpdatePlayerSum player, mp
 	end
 	dbm.tapiplayers = tapiplayers
+	dbm.avg_gpm /= 10
 	dbm.save
 end
 
