@@ -1,6 +1,6 @@
 class MatchesController < ApplicationController
 	def index
-		@matches = Match.all
+		@matches = Match.all.order("matchid DESC");
 		@matches.each do |m|
 			puts m.starttime
 		end
