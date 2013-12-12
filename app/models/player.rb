@@ -12,7 +12,6 @@ class Player < ActiveRecord::Base
 
 	def UpdatePlayerSum mp
 		self.num_matches += 1
-		self.matches << mp.match
 		self.sum_herodamage += mp.herodamage
 		self.sum_towerdamage += mp.towerdamage
 		self.sum_gold += mp.goldspent + mp.finishgold
