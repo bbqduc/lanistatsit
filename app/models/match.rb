@@ -81,5 +81,9 @@ class Match < ActiveRecord::Base
 		dbm.save
 		log.info "SAVED " + m["matchId"].to_s
 	end
+
+	def self.GetTapiWinRate scope
+		(scope.where("tapiwin='t'").count*100 / scope.count.to_f).round(2)	
+	end
 end
 

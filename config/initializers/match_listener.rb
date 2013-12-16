@@ -13,22 +13,24 @@ class MatchListener
 	def initialize log
 		@context = ZMQ::Context.new 1
 		@inbound = @context.socket ZMQ::REP
-		rc = @inbound.connect "ipc:///tmp/matchinsertion"
+#		rc = @inbound.connect "ipc:///tmp/matchinsertion"
+		rc = @inbound.connect "tcp://127.0.0.1:5000"
 #		@poller = ZMQ::Poller.new
 #		@poller.register_readable @inbound
 		@pull_thread = Thread.new {
 			while (ZMQ::Util.resultcode_ok? rc)
 				begin
 					msg = ""
+					log.info "Receiving."
 					rc = @inbound.recv_string msg
 					log.info "Received message"
 					puts "Received message" + msg
 					m = JSON.parse msg
 					if m["type"] == "MATCH_INSERT"
 						Match.InsertMatch m["message"], log
-						@inbound.send_string "OK"
+						rc = @inbound.send_string "OK"
 					else
-						@inbound.send_string "NOT OK"
+						rc = @inbound.send_string "NOT OK"
 					end
 
 				rescue 

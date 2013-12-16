@@ -26,4 +26,6 @@ class Player < ActiveRecord::Base
 		self.sum_tfc += mp.tfc
 		save
 	end
+
+	scope :tapiplayers, -> { where("accountid != 0") }
 end
