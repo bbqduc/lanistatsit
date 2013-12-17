@@ -33,8 +33,8 @@ class MatchListener
 						rc = @inbound.send_string "NOT OK"
 					end
 
-				rescue 
-					log.info "ERROR RAISED IN MATCH LISTENER"
+				rescue => detail
+					log.info "ERROR RAISED IN MATCH LISTENER: " + detail.to_s
 					retry
 				end
 			end

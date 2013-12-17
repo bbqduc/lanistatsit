@@ -1,6 +1,9 @@
 class MatchesController < ApplicationController
 	def index
-		@tapiwinrate = Match.GetTapiWinRate Match
+		@tapiwinrate = []
+		(1..5).each do |i|
+			@tapiwinrate[i-1] = Match.GetTapiWinRate Match.where(:tapiplayers => i);
+		end
 		@matches = Match.all.order("matchid DESC").take 25
 		@matches.each do |m|
 			puts m.starttime

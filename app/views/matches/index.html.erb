@@ -1,5 +1,17 @@
+<h1>Tapiiri winrate</h1>
+
+<table class="table table-bordered table-condensed" style="width: 10%">
+	<th>Tapiplayers</th>
+	<th>Winrate</th>
+	<% @tapiwinrate.each_index do |i| %>
+	<tr class=<%= @tapiwinrate[i] < 50 ? "danger" : "success"%> >
+		<td><%= (i+1).to_s %></td>
+		<td><%= @tapiwinrate[i] %></td>
+	</tr>
+	<% end %>
+</table>
+
 <h1>All matches</h1>
 
-<h3>Tapiiri winrate: <%= @tapiwinrate.to_s + "%" %></h3>
 
 <%= render "matches" %>
