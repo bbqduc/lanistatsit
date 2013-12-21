@@ -9,9 +9,16 @@ class MatchesController < ApplicationController
 			puts m.starttime
 		end
 	end
+	def CalcAwards match
+		ret = {}
+		sorted = match.match_participations.sort_by { |p| p.herodamage.to_f / (p.kills+1) }
+		ret[sorted[0].id] = {:text => "Kill Securing award (#{(sorted[0].herodamage.to_f / sorted[0].kills).round(2)} damage per kill)"}
+		return ret
+	end
 	def show
 		@match = (Match.where :id => params[:id])[0]
 		gon.damagechartdata = CreatePieChartData @match
+		@awards = CalcAwards @match
 	end
 	def CreatePieChartData match
 		participations = match.match_participations

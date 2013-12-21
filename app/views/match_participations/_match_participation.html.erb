@@ -1,5 +1,7 @@
 <tr>
-	<td><%= link_to(match_participation.player.name, match_participation.player) %></td>
+	<td><%= link_to(match_participation.player.name, match_participation.player) %>
+	<%= (defined? @awards) != nil && @awards[match_participation.id] != nil ? image_tag("crown-icon.png", :title => @awards[match_participation.id][:text], :align => "right") : ""%>
+</td>
 	<td><%= match_participation.hero.name %></td>
 	<td><%= match_participation.kills %></td>
 	<td><%= match_participation.deaths %></td>

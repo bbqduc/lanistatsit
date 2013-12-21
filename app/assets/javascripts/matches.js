@@ -1,11 +1,12 @@
 (function () {
 	var color = d3.scale.category20c();     //builtin range of colors
 
-	var drawPieChart = function(data, valuekey, svgid)
+	var drawPieChart = function(origdata, valuekey, svgid)
 	{
 	var w = 300,                        //width
 		h = 300,                            //height
 		r = 100;                            //radius
+	var data = origdata.filter(function(d) { return d[valuekey] > 0;} );
 
 	var vis = d3.select(svgid)
 		.append("svg:svg")              //create the SVG element inside the <body>
