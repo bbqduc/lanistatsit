@@ -1,4 +1,4 @@
-# This file should contain all the record creation needed to seed the database with its default values.
+# Thi/ file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
 # Examples:
@@ -30,7 +30,8 @@ def InsertHeroes
 	heroes = JSON.parse s
 	heroes["result"]["heroes"].each do |h|
 		Hero.create ({:heroid => h["id"],
-				:name => h["localized_name"]
+				:name => h["localized_name"],
+				:image_name => h["name"].slice(14, h["name"].size) + "_sb.png"
 		})
 	end
 end

@@ -11,12 +11,21 @@ class MatchesController < ApplicationController
 	end
 	def CalcAwards match
 		ret = {}
+		match.match_participations.each do |m|
+			ret[m.id] = []
+		end
 		sorted = match.match_participations.sort_by { |p| p.herodamage.to_f / (p.kills+1) }
-		ret[sorted[0].id] = {:text => "Kill Securing award (#{(sorted[0].herodamage.to_f / sorted[0].kills).round(2)} damage per kill)"}
+		ret[sorted.first.id] << {:text => "Kill Securing award (#{(sorted.first.herodamage.to_f / sorted.first.kills).round(2)} damage per kill)"}
+		ret[sorted.last.id] << {:text => "Die, damn you, die! award (#{(sorted.last.herodamage.to_f / sorted.last.kills).round(2)} damage per kill)"}
+
+		sorted = sorted.sort_by!{|m| m.tfc}.reverse!
+		ret[sorted.first.id] << {:text => "Playmaker award (Participated in #{(100*sorted.first.tfc).round(2)}% of team's kills)"}
+		ret[sorted.last.id] << {:text => "What is tp scroll? award (Participated in #{(100*sorted.last.tfc).round(2)}% of team's kills)"}
+
 		return ret
 	end
 	def show
-		@match = (Match.where :id => params[:id])[0]
+		@match = Match.find params[:id]
 		gon.damagechartdata = CreatePieChartData @match
 		@awards = CalcAwards @match
 	end

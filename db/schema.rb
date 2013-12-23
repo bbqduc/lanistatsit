@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131211111602) do
+ActiveRecord::Schema.define(version: 20131223105000) do
 
   create_table "heros", force: true do |t|
     t.string   "name"
     t.integer  "heroid"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image_name"
   end
 
   add_index "heros", ["heroid"], name: "index_heros_on_heroid", unique: true

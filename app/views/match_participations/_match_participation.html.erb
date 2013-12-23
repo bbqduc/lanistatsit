@@ -1,8 +1,12 @@
 <tr>
 	<td><%= link_to(match_participation.player.name, match_participation.player) %>
-	<%= (defined? @awards) != nil && @awards[match_participation.id] != nil ? image_tag("crown-icon.png", :title => @awards[match_participation.id][:text], :align => "right") : ""%>
+	<% if(defined? @awards) != nil && @awards[match_participation.id] != nil%>
+		<% @awards[match_participation.id].each do |a| %>
+			<%= image_tag("crown-icon.png", :title => a[:text], :align => "right") %>
+		<% end %>
+	<% end %>
 </td>
-	<td><%= match_participation.hero.name %></td>
+	<td style="width:10px;padding:0"><%= image_tag(match_participation.hero.image_name, :title => match_participation.hero.name) %></td>
 	<td><%= match_participation.kills %></td>
 	<td><%= match_participation.deaths %></td>
 	<td><%= match_participation.assists %></td>
