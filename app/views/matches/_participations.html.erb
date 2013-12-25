@@ -1,3 +1,7 @@
+
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
 <h2>Radiant <%= match.radiant_win ? "(Winner)" : "" %></h2>
 <table class="table table-bordered">
 	<th class="namecell">Player</th>
@@ -31,34 +35,10 @@
 </table>
 
 <div id="charts">
-
-<table>
-	<tr>
-			<td class="charttitle">Radiant Hero Damage Distribution</td>
-			<td class="charttitle">Dire Hero Damage Distribution</td>
-	</tr>
-	<tr>
-			<td class="chartsvg"><svg width=400 height=300 id="radiantdamagechart"></svg></td>
-			<td class="chartsvg"><svg width=400 height=300 id="diredamagechart"></svg></td>
-	</tr>
-
-	<tr>
-			<td class="charttitle">Radiant Tower Damage Distribution</td>
-			<td class="charttitle">Dire Tower Damage Distribution</td>
-	</tr>
-	<tr>
-			<td class="chartsvg"><svg width=400 height=300 id="radianttowerdamagechart"></svg></td>
-			<td class="chartsvg"><svg width=400 height=300 id="diretowerdamagechart"></svg></td>
-	</tr>
-
-	<tr>
-			<td class="charttitle">Radiant Gold Distribution</td>
-			<td class="charttitle">Dire Gold Distribution</td>
-	</tr>
-	<tr>
-			<td class="chartsvg"><svg width=400 height=300 id="radiantgoldpiechart"></svg></td>
-			<td class="chartsvg"><svg width=400 height=300 id="diregoldpiechart"></svg></td>
-	</tr>
-</table>
-
+    <div id="radiantdamagechart" style="min-width:150px; height:200px; margin: 0 auto"></div>
+    <div id="radianttowerdamagechart" style="min-width:150px; height:200px; margin: 0 auto"></div>
+    <div id="radiantgoldchart" style="min-width:150px; height:200px; margin: 0 auto"></div>
+    <div id="diredamagechart" style="min-width:150px; height:200px; margin: 0 auto"></div>
+    <div id="diretowerdamagechart" style="min-width:150px; height:200px; margin: 0 auto"></div>
+    <div id="diregoldchart" style="min-width:150px; height:200px; margin: 0 auto"></div>
 </div>

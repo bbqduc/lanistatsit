@@ -41,9 +41,6 @@ GEM
       railties (>= 3.1)
     erubis (2.7.0)
     execjs (2.0.2)
-    ffi (1.9.3)
-    ffi-rzmq (1.0.3)
-      ffi
     gon (4.1.1)
       actionpack (>= 2.3.0)
       json
@@ -125,7 +122,6 @@ DEPENDENCIES
   bootstrap-sass
   coffee-rails (~> 4.0.0)
   d3-rails
-  ffi-rzmq
   gon
   jbuilder (~> 1.2)
   jquery-rails
