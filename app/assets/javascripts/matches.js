@@ -4,6 +4,7 @@
 {
     var fdata = origdata.filter(function(d) { return d[valuekey] > 0;} );
     if(fdata.length == 0) return;
+    $(svgid).attr("class", "matchpiechart");
 
     var data = [];
         for(var i in fdata)
@@ -16,6 +17,11 @@
             plotBackgroundColor: null,
             plotBorderWidth: null,
             plotShadow: false
+        },
+        navigation: {
+            buttonOptions: {
+                enabled: false,
+            },
         },
         title: {
             text: title
@@ -37,7 +43,7 @@
         },
         series: [{
             type: 'pie',
-            name: 'Browser share',
+            name: title,
             data: data
         }]
     });
@@ -49,7 +55,7 @@
 		drawPieChart(gon.damagechartdata["radiant"], "gold", "#radiantgoldchart", "Radiant Gold");
 
 		drawPieChart(gon.damagechartdata["dire"], "herodamage", "#diredamagechart", "Dire Hero Damage");
-		drawPieChart(gon.damagechartdata["dire"], "towerdamage", "#diretowerdamagechart", "Dire Tower Damae");
+		drawPieChart(gon.damagechartdata["dire"], "towerdamage", "#diretowerdamagechart", "Dire Tower Damage");
 		drawPieChart(gon.damagechartdata["dire"], "gold", "#diregoldchart", "Dire Gold");
 	}
 
