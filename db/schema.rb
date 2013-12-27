@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131223105000) do
+ActiveRecord::Schema.define(version: 20131227134615) do
 
   create_table "heros", force: true do |t|
     t.string   "name"
@@ -95,5 +95,16 @@ ActiveRecord::Schema.define(version: 20131223105000) do
   end
 
   add_index "players", ["accountid"], name: "index_players_on_accountid", unique: true
+
+  create_table "time_series", force: true do |t|
+    t.integer "minute"
+    t.integer "xp"
+    t.integer "gold"
+    t.integer "lasthits"
+    t.integer "denies"
+    t.integer "match_participation_id"
+  end
+
+  add_index "time_series", ["match_participation_id", "minute"], name: "index_time_series_on_match_participation_id_and_minute"
 
 end

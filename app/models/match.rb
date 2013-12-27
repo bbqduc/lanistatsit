@@ -85,5 +85,23 @@ class Match < ActiveRecord::Base
 	def self.GetTapiWinRate scope
 		(scope.where("tapiwin='t'").count*100 / scope.count.to_f).round(2)	
 	end
+
+	def ProcessReplayInfo info
+		mps = self.match_participations
+		info.each do |i|
+			hero = Hero.find_by heroid: i["hero"]
+			mp = mps.find_by hero_id: hero.id
+			i["gold"].each_index do |j|
+				TimeSeries.create(
+					:match_participation_id => mp.id,
+					:minute => j,
+					:gold => i["gold"][j],
+					:xp => i["xp"][j],
+					:lasthits => i["lasthits"][j],
+					:denies => i["denies"][j]
+				);
+			end
+		end
+	end
 end
 

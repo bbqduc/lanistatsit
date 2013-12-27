@@ -27,6 +27,16 @@ class MatchesController < ApplicationController
 	def show
 		@match = Match.find params[:id]
 		gon.damagechartdata = CreatePieChartData @match
+		gon.radiant_timeseries = []
+		gon.dire_timeseries = []
+		@match.match_participations.each do |mp|
+			if mp.radiant
+				gon.radiant_timeseries << mp.time_series
+			else
+				gon.dire_timeseries << mp.time_series
+			end
+		end
+		gon.timeseries = @match.match_participations.first.time_series
 		@awards = CalcAwards @match
 	end
 	def CreatePieChartData match

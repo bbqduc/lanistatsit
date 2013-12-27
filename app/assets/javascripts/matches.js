@@ -1,5 +1,65 @@
 (function () {
 
+	var getGoldDiffChartData = function()
+{
+	var arr = [];
+	for(var i in gon.radiant_timeseries[0])
+	{
+		var radsum = gon.radiant_timeseries.reduce(function(a,b) { return a + b[i]["gold"] }, 0);
+		var diresum = gon.dire_timeseries.reduce(function(a,b) { return a + b[i]["gold"] }, 0);
+		arr.push (radsum - diresum);
+	}
+	return arr;
+}
+
+	var drawTimeSeries = function(data, svgid, title)
+{
+$(svgid).highcharts({
+            chart: {
+                type: 'areaspline'
+            },
+            title: {
+                text: title
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 150,
+                y: 100,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: '#FFFFFF'
+            },
+            xAxis: {
+				title: {
+					text: 'Minute'
+				}
+            },
+            yAxis: {
+                title: {
+                    text: 'Gold'
+                }
+            },
+            tooltip: {
+                shared: true,
+                valueSuffix: ''
+            },
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                areaspline: {
+                    fillOpacity: 0.5
+                }
+            },
+            series: [{
+                name: 'Total Gold Earned',
+                data: data
+            }]
+        });
+}
+
 	var drawPieChart = function(origdata, valuekey, svgid, title)
 {
     var fdata = origdata.filter(function(d) { return d[valuekey] > 0;} );
@@ -57,6 +117,9 @@
 		drawPieChart(gon.damagechartdata["dire"], "herodamage", "#diredamagechart", "Dire Hero Damage");
 		drawPieChart(gon.damagechartdata["dire"], "towerdamage", "#diretowerdamagechart", "Dire Tower Damage");
 		drawPieChart(gon.damagechartdata["dire"], "gold", "#diregoldchart", "Dire Gold");
+
+		var golddiffdata = getGoldDiffChartData();
+		drawTimeSeries(golddiffdata, "#testgoldchart", "Gold difference over game time");
 	}
 
 $(document).ready(ready);
