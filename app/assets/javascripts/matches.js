@@ -1,12 +1,12 @@
 (function () {
 
-	var getGoldDiffChartData = function()
+	var getDiffChartData = function(keyvalue)
 {
 	var arr = [];
 	for(var i in gon.radiant_timeseries[0])
 	{
-		var radsum = gon.radiant_timeseries.reduce(function(a,b) { return a + b[i]["gold"] }, 0);
-		var diresum = gon.dire_timeseries.reduce(function(a,b) { return a + b[i]["gold"] }, 0);
+		var radsum = gon.radiant_timeseries.reduce(function(a,b) { return a + b[i][keyvalue] }, 0);
+		var diresum = gon.dire_timeseries.reduce(function(a,b) { return a + b[i][keyvalue] }, 0);
 		arr.push (radsum - diresum);
 	}
 	return arr;
@@ -55,7 +55,11 @@ $(svgid).highcharts({
             },
             series: [{
                 name: 'Total Gold Earned',
-                data: data
+                data: data[0]
+            },
+	    {
+                name: 'Total XP Earned',
+                data: data[1]
             }]
         });
 }
@@ -118,8 +122,9 @@ $(svgid).highcharts({
 		drawPieChart(gon.damagechartdata["dire"], "towerdamage", "#diretowerdamagechart", "Dire Tower Damage");
 		drawPieChart(gon.damagechartdata["dire"], "gold", "#diregoldchart", "Dire Gold");
 
-		var golddiffdata = getGoldDiffChartData();
-		drawTimeSeries(golddiffdata, "#testgoldchart", "Gold difference over game time");
+		var golddiffdata = getDiffChartData("gold");
+		var xpdiffdata = getDiffChartData("xp");
+		drawTimeSeries([golddiffdata, xpdiffdata], "#testgoldchart", "Team difference over game time");
 	}
 
 $(document).ready(ready);
