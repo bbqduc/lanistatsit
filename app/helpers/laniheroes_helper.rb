@@ -1,0 +1,2 @@
+module LaniheroesHelper
+end

@@ -2,4 +2,8 @@
 
 <h3>Player winrate: <%= @tapiwinrate.to_s + "%" %></h3>
 
+<%= render partial: "laniheroes/laniheroes_for_player", locals: {
+  player: @player,
+  laniheroes: @player.laniheros
+} %>
 <%= render "matches/matches" %>

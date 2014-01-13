@@ -1,0 +1,11 @@
+<h1>Laniheroes</h1>
+
+<% @players.each do |player| %>
+	<% if player.laniheros.count > 0 %>
+		<h4><%= player.name %></h4>
+	<% end %>
+	<%= render partial: "laniheroes_for_player", locals: {
+		player: player,
+		laniheroes: player.laniheros
+	} %>
+<% end %>

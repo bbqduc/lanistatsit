@@ -1,0 +1,14 @@
+<% if laniheroes.count > 0 %>
+  <table class="table table-bordered">
+    <tr>
+      <th class="namecell">Hero</th>
+      <th class="namecell">Comment</th>
+    </tr>
+    <% laniheroes.each do |h| %>
+      <tr>
+        <td><%= Hero.find(h).name %></td>
+        <td><%= h.comment %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

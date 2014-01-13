@@ -2,6 +2,9 @@ class Player < ActiveRecord::Base
 	has_many :match_participations
 	has_and_belongs_to_many :matches
 
+  has_many :laniheros
+  has_many :heros, through: :laniheros
+
 	def self.FindOrInsertPlayer id
 		p = Player.where ({:accountid => id})
 		if p == nil || p == []

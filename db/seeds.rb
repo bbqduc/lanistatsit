@@ -36,6 +36,15 @@ def InsertHeroes
 	end
 end
 
+def InsertLaniHeroes
+  Lanihero.create({
+    :hero_id => Hero.first.id,
+    :player_id => Player.first.id,
+    :comment => "Lanihero from seeds.rb"
+  })
+end
+
 InsertHeroes()
 InsertTapiiris()
-matches.each { |m| Match.InsertMatch m }
+matches.each { |m| Match.InsertMatch(m, Logger.new("/dev/null")) }
+InsertLaniHeroes()
