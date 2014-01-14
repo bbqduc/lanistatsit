@@ -36,7 +36,6 @@ class MatchesController < ApplicationController
 				gon.dire_timeseries << mp.time_series
 			end
 		end
-		gon.timeseries = @match.match_participations.first.time_series
 		@awards = CalcAwards @match
 	end
 	def CreatePieChartData match

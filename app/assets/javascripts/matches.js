@@ -11,6 +11,65 @@
 	}
 	return arr;
 }
+	var drawGoldTimeSeries = function(svgid, title)
+{
+	var tmpseries = [];
+	for(var i in gon.radiant_timeseries[0])
+	{
+		var radsum = gon.radiant_timeseries.reduce(function(a,b) { return a + b[i][keyvalue] }, 0);
+		var diresum = gon.dire_timeseries.reduce(function(a,b) { return a + b[i][keyvalue] }, 0);
+		arr.push (radsum - diresum);
+	}
+
+$(svgid).highcharts({
+            chart: {
+                type: 'areaspline'
+            },
+            title: {
+                text: title
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 150,
+                y: 100,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: '#FFFFFF'
+            },
+            xAxis: {
+				title: {
+					text: 'Minute'
+				}
+            },
+            yAxis: {
+                title: {
+                    text: 'Gold'
+                }
+            },
+            tooltip: {
+                shared: true,
+                valueSuffix: ''
+            },
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                areaspline: {
+                    fillOpacity: 0.5
+                }
+            },
+            series: [{
+                name: 'Total Gold Earned',
+                data: data[0]
+            },
+	    {
+                name: 'Total XP Earned',
+                data: data[1]
+            }]
+        });
+}
 
 	var drawTimeSeries = function(data, svgid, title)
 {

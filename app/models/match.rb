@@ -8,16 +8,18 @@ class Match < ActiveRecord::Base
 	def self.FetchMatchFromWebAPI matchid
 		oldm = Match.find_by matchid: matchid
 		if oldm != nil
-			return
+			return false
 		end
 
-		steamapikey="SUPERSECRETOMGLOL"
+		steamapikey="SUPERSECRETLOL"
 		url = "https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/V001/?match_id=" + matchid.to_s + "&key=" + steamapikey
 		c = Curl::Easy.new url
 		c.perform
 		s = c.body_str
+		IO.write Rails.root.join('db', 'fetched', matchid.to_s + ".json"), s
 		o = JSON.parse s
 		InsertMatchFromWebAPI o, Logger.new(STDOUT)
+		return true
 	end
 
 	def self.InsertMatchFromWebAPI match, log
@@ -30,6 +32,9 @@ class Match < ActiveRecord::Base
 		oldm = Match.find_by matchid: m["match_id"]
 		if oldm != nil
 			log.info "PRE_EXISTING " + m["match_id"].to_s
+			return
+		end
+		if m["first_blood_time"] == 0
 			return
 		end
 		dbm = Match.create ({ :matchid => m["match_id"],
@@ -67,7 +72,7 @@ class Match < ActiveRecord::Base
 			mp = MatchParticipation.create ({ 
 				:match_id => dbm.id,
 				:player_id => player.id,
-				:hero_id => hero.id,
+				:hero_id => hero != nil ? hero.id : nil,
 				:kills => p["kills"],
 				:assists => p["assists"],
 				:deaths => p["deaths"],
