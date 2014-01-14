@@ -1,8 +1,106 @@
+require 'curb'
+require 'json'
+
 class Match < ActiveRecord::Base
 	has_many :match_participations
 	has_and_belongs_to_many :players;
 
-	def self.InsertMatch match, log
+	def self.FetchMatchFromWebAPI matchid
+		oldm = Match.find_by matchid: matchid
+		if oldm != nil
+			return
+		end
+
+		steamapikey="SUPERSECRETOMGLOL"
+		url = "https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/V001/?match_id=" + matchid.to_s + "&key=" + steamapikey
+		c = Curl::Easy.new url
+		c.perform
+		s = c.body_str
+		o = JSON.parse s
+		InsertMatchFromWebAPI o, Logger.new(STDOUT)
+	end
+
+	def self.InsertMatchFromWebAPI match, log
+		m = match["result"]
+		tapiplayers = 0
+		radiantkills = 0
+		direkills = 0
+		log.info "Insertion request for match id : " + m["match_id"].to_s
+		puts "Insertion request for match id : " + m["match_id"].to_s
+		oldm = Match.find_by matchid: m["match_id"]
+		if oldm != nil
+			log.info "PRE_EXISTING " + m["match_id"].to_s
+			return
+		end
+		dbm = Match.create ({ :matchid => m["match_id"],
+						:towerstatus_radiant => m["tower_status_radiant"],
+						:towerstatus_dire => m["tower_status_dire"],
+						:barracksstatus_radiant => m["barracks_status_radiant"],
+						:barracksstatus_dire => m["barracks_status_dire"],
+						:firstbloodtime => m["first_blood_time"],
+						:gamemode => m["game_mode"],
+						:radiant_win => m["radiant_win"],
+						:duration => m["duration"],
+						:starttime => (Time.at m["start_time"]),
+						:replayurl => nil,
+						:tapiplayers => 0
+		})
+		log.info "Created MATCH for" + m["match_id"].to_s
+		m["players"].each do |p|
+			isRadiant = p["player_slot"] < 128
+
+			if isRadiant
+				radiantkills += p["kills"]
+			else
+				direkills += p["kills"]
+			end
+		end
+		log.info "Counted KILLS for " + m["match_id"].to_s
+		m["players"].each do |p|
+			player = Player.FindOrInsertPlayer(p["account_id"])
+			isRadiant = p["player_slot"] < 128
+			teamkills = isRadiant ? radiantkills : direkills
+			tfc = teamkills == 0 ? 1.0 : (p["kills"] + p["assists"]) / teamkills.to_f
+
+
+			hero = Hero.find_by heroid: p["hero_id"]
+			mp = MatchParticipation.create ({ 
+				:match_id => dbm.id,
+				:player_id => player.id,
+				:hero_id => hero.id,
+				:kills => p["kills"],
+				:assists => p["assists"],
+				:deaths => p["deaths"],
+				:finishgold => p["gold"],
+				:goldspent => p["gold_spent"],
+				:lasthits => p["last_hits"],
+				:denies => p["denies"],
+				:gpm => p["gold_per_min"],
+				:xpm => p["xp_per_min"],
+				:herodamage => p["hero_damage"],
+				:towerdamage => p["tower_damage"],
+				:herohealing => p["hero_healing"],
+				:level => p["level"],
+				:radiant => isRadiant,
+				:win => isRadiant ? dbm.radiant_win : !dbm.radiant_win,
+				:tfc => tfc
+			})
+			if player.accountid != 0
+				tapiplayers += 1
+				dbm.tapiwin = mp.win
+				dbm.players << player
+			end
+			dbm.kills += mp.kills
+			dbm.avg_gpm += mp.gpm
+			player.UpdatePlayerSum mp
+		end
+		dbm.tapiplayers = tapiplayers
+		dbm.avg_gpm /= 10
+		dbm.save
+		log.info "SAVED " + m["match_id"].to_s
+	end
+
+	def self.InsertMatchFromJorn match, log
 		m = match["match"]
 		tapiplayers = 0
 		radiantkills = 0
