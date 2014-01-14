@@ -21,6 +21,8 @@ def InsertTapiiris
 				:name => "torttuPmies"})
 	Player.create({:accountid => 82009679,
 				:name => "XermoS"})
+	Player.create({:accountid => 74019421,
+				:name => "pauge"})
 	Player.create({:accountid => 0,
 				:name => "Non-Tapiiri"})
 end

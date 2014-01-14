@@ -1,0 +1,11 @@
+<%= form_tag do %>
+    <div class="form-group">
+    <%= label_tag "name", "Username" %>
+    <%= select_tag("name", options_for_select(Player.tapiplayers.map {|p| p.name}), :class => "form-control") %>
+  </div>
+  <div class="form-group">
+    <%= label_tag "password" %>
+    <%= password_field_tag "password", nil, class: "form-control span4", placeholder: "Password" %>
+  </div>
+  <%= button_tag "Login", class: "btn btn-primary btn-block" %>
+<% end %>

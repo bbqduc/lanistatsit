@@ -1,3 +1,5 @@
+require 'digest/sha1'
+
 class Player < ActiveRecord::Base
 	has_many :match_participations
 	has_and_belongs_to_many :matches
@@ -12,6 +14,10 @@ class Player < ActiveRecord::Base
 		end
 		return p.first
 	end
+
+  def ValidPassword pass
+    Digest::SHA1.hexdigest(self.salt + pass) == self.password
+  end
 
 	def UpdatePlayerSum mp
 		self.num_matches += 1

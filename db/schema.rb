@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140113123522) do
+ActiveRecord::Schema.define(version: 20140114121216) do
 
   create_table "heros", force: true do |t|
     t.string   "name"
@@ -100,6 +100,8 @@ ActiveRecord::Schema.define(version: 20140113123522) do
     t.integer  "sum_towerdamage", default: 0
     t.integer  "sum_level",       default: 0
     t.float    "sum_tfc",         default: 0.0
+    t.string   "password"
+    t.string   "salt"
   end
 
   add_index "players", ["accountid"], name: "index_players_on_accountid", unique: true
@@ -114,5 +116,14 @@ ActiveRecord::Schema.define(version: 20140113123522) do
   end
 
   add_index "time_series", ["match_participation_id", "minute"], name: "index_time_series_on_match_participation_id_and_minute"
+
+  create_table "users", force: true do |t|
+    t.text     "name"
+    t.text     "password"
+    t.string   "salt"
+    t.string   "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end
