@@ -48,5 +48,5 @@ end
 
 InsertHeroes()
 InsertTapiiris()
-matches.each { |m| Match.InsertMatch(m, Logger.new("/dev/null")) }
+matches.each { |m| Match.InsertMatchFromJorn(m, Logger.new("/dev/null")) }
 InsertLaniHeroes()
