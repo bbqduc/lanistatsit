@@ -1,4 +1,8 @@
 <%= link_to 'Matches', '/matches', class: 'navbar-brand' %>
 <%= link_to 'Players', '/players', class: 'navbar-brand' %>
 <%= link_to 'Heroes', '/laniheroes', class: 'navbar-brand' %>
-<%= link_to 'Login', '/login', class: 'navbar-brand' %>
+<% if session[:user_id] %>
+  <%= link_to 'Logout', '/logout', class: 'navbar-brand' %>
+<% else %>
+  <%= link_to 'Login', '/login', class: 'navbar-brand' %>
+<% end %>

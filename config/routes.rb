@@ -8,6 +8,7 @@ Hello::Application.routes.draw do
     get 'index'
     post 'index'
   end
+  get 'logout' => 'login#logout'
   root "matches#index"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
