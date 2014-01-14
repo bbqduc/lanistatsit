@@ -5,6 +5,21 @@ class Match < ActiveRecord::Base
 	has_many :match_participations
 	has_and_belongs_to_many :players;
 
+	def self.GetNewTapiMatches
+		matchids = []
+		Player.tapiplayers.each do |p|
+			matchids += p.GetNewMatchIds
+			sleep 1;
+		end
+
+		matchids.each do |m|
+			if FetchMatchFromWebApi m
+				sleep 1;
+			end
+		end
+
+	end
+
 	def self.FetchMatchFromWebAPI matchid
 		oldm = Match.find_by matchid: matchid
 		if oldm != nil

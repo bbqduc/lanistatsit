@@ -36,5 +36,27 @@ class Player < ActiveRecord::Base
 		save
 	end
 
+	def GetNewMatchIds
+		steamapikey="supersecretlol"
+		url = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?account_id=" + self.accountid.to_s + "&key=" + steamapikey
+
+		c = Curl::Easy.new url
+		c.perform
+		s = c.body_str
+		o = JSON.parse s
+
+		if o["result"]["matches"] == nil
+			return []
+		end
+
+		ids = []
+
+		o["result"]["matches"].each do |m|
+			ids << m["match_id"]
+		end
+
+		return ids
+	end
+
 	scope :tapiplayers, -> { where("accountid != 0") }
 end
