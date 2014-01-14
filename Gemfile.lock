@@ -37,6 +37,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.3)
+    curb (0.8.5)
     d3-rails (3.3.7)
       railties (>= 3.1)
     erubis (2.7.0)
@@ -121,6 +122,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap-sass
   coffee-rails (~> 4.0.0)
+  curb
   d3-rails
   gon
   jbuilder (~> 1.2)
