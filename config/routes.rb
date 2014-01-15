@@ -3,7 +3,7 @@ Hello::Application.routes.draw do
 
   resources :matches, only: [:index, :show]
   resources :players, only: [:index, :show]
-  resources :laniheroes, only: [:index, :show]
+  resources :laniheroes
   resources :login do
     get 'index'
     post 'index'

@@ -1,13 +1,24 @@
 <% if laniheroes.count > 0 %>
   <table class="table table-bordered">
     <tr>
-      <th class="namecell">Hero</th>
-      <th class="namecell">Comment</th>
+      <th class="col-lg-4">Hero</th>
+      <th class="col-lg-16">Comment</th>
+      <% if player.id == session[:user_id] %>
+        <th class="col-lg-1">Delete</th>
+      <% end %>
     </tr>
     <% laniheroes.each do |h| %>
       <tr>
-        <td><%= Hero.find(h).name %></td>
+        <td><%= Hero.find(h.hero_id).name %></td>
         <td><%= h.comment %></td>
+        <% if player.id == session[:user_id] %>
+          <td>
+              <%= button_to "✖",
+              {:controller => "laniheroes", :action => "destroy", :id => h.id},
+              class: "btn btn-xs btn-danger",
+              :method => :delete %>
+          </td>
+        <% end %>
       </tr>
     <% end %>
   </table>

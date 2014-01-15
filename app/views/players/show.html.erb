@@ -6,4 +6,9 @@
   player: @player,
   laniheroes: @player.laniheros
 } %>
+<% if session[:user_id] == @player.id %>
+  <div class="well">
+    <%= render "laniheroes/new" %>
+  </div>
+<% end %>
 <%= render "matches/matches" %>

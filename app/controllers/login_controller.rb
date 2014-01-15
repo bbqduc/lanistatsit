@@ -9,7 +9,7 @@ class LoginController < ApplicationController
       redirect_to :controller => "login", :action => "index"
     else
       session[:user_id] = plr.id
-      redirect_to matches_path
+      redirect_to player_path(plr.id)
     end
   end
 
