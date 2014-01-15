@@ -37,7 +37,7 @@ class Player < ActiveRecord::Base
 	end
 
 	def GetNewMatchIds
-		steamapikey="supersecretlol"
+		steamapikey="SUPERSECRETLOL"
 		url = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?account_id=" + self.accountid.to_s + "&key=" + steamapikey
 
 		c = Curl::Easy.new url

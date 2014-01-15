@@ -54,3 +54,4 @@ end
 gem 'd3-rails'
 gem 'gon'
 gem 'curb'
+gem 'nokogiri'

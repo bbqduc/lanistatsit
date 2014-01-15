@@ -1,9 +1,58 @@
 require 'curb'
 require 'json'
+require 'open-uri'
+require 'nokogiri'
+require 'pty'
 
 class Match < ActiveRecord::Base
 	has_many :match_participations
 	has_and_belongs_to_many :players;
+
+	def FetchReplay
+		if self.match_participations[0].time_series.count != 0
+			return
+		end
+
+		rep_path = Rails.root.join('db', 'fetched_replays', matchid.to_s + ".dem.bz2")
+		if(!rep_path.exist?)
+			url = "https://rjackson.me/tools/matchurls?matchid=" + self.matchid.to_s
+			page = Nokogiri::HTML(open url)
+			repurl = page.css('input')[0].attributes["value"].value
+
+			puts "Got repurl : " + repurl
+
+			File.open(rep_path, "wb") do |saved_file|
+				begin
+					open(repurl, "rb") do |read_file|
+						saved_file.write(read_file.read)
+					end
+				rescue OpenURI::HTTPError
+					return
+				end
+			end
+		end
+		
+		self.ParseReplayFile rep_path
+	end
+
+	def ParseReplayFile path
+		bin_path = Rails.root.join('db', 'replay_parser')
+		cmd = "bzcat " + path.to_s + " | " + bin_path.to_s
+		jsonstring = ""
+		begin
+			PTY.spawn(cmd) do |stdin, stdout, pid|
+			begin
+				stdin.each { |line| jsonstring += line}
+			rescue Errno::EIO
+				puts "Errno::EIO error"
+			end
+			end
+		rescue
+			puts "Child process exited"
+		end
+		o = JSON.parse jsonstring
+		self.ProcessReplayInfo o
+	end
 
 	def self.GetNewTapiMatches
 		matchids = []
@@ -13,11 +62,10 @@ class Match < ActiveRecord::Base
 		end
 
 		matchids.each do |m|
-			if FetchMatchFromWebApi m
+			if FetchMatchFromWebAPI m
 				sleep 1;
 			end
 		end
-
 	end
 
 	def self.FetchMatchFromWebAPI matchid
@@ -118,6 +166,7 @@ class Match < ActiveRecord::Base
 		dbm.avg_gpm /= 10
 		dbm.save
 		log.info "SAVED " + m["match_id"].to_s
+		dbm.FetchReplay()
 	end
 
 	def self.InsertMatchFromJorn match, log
@@ -206,6 +255,9 @@ class Match < ActiveRecord::Base
 
 	def ProcessReplayInfo info
 		mps = self.match_participations
+		if mps[0].time_series.count != 0
+			return
+		end
 		info.each do |i|
 			hero = Hero.find_by heroid: i["hero"]
 			mp = mps.find_by hero_id: hero.id
