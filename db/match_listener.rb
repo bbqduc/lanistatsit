@@ -30,7 +30,7 @@ class MatchListener
 #					puts "Received message" + msg
 					m = JSON.parse msg
 					if m["type"] == "MATCH_INSERT"
-						Match.InsertMatch m["message"], log
+						Match.InsertMatchFromJorn m["message"], log
 						rc = @inbound.send_string "OK"
 					else
 						rc = @inbound.send_string "NOT OK"

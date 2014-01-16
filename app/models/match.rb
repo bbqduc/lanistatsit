@@ -15,9 +15,14 @@ class Match < ActiveRecord::Base
 
 		rep_path = Rails.root.join('db', 'fetched_replays', matchid.to_s + ".dem.bz2")
 		if(!rep_path.exist?)
-			url = "https://rjackson.me/tools/matchurls?matchid=" + self.matchid.to_s
-			page = Nokogiri::HTML(open url)
-			repurl = page.css('input')[0].attributes["value"].value
+			repurl = ""
+			if(self.replayurl != nil)
+				repurl = self.replayurl
+			else
+				url = "https://rjackson.me/tools/matchurls?matchid=" + self.matchid.to_s
+				page = Nokogiri::HTML(open url)
+				repurl = page.css('input')[0].attributes["value"].value
+			end
 
 			puts "Got repurl : " + repurl
 
@@ -247,6 +252,7 @@ class Match < ActiveRecord::Base
 		dbm.avg_gpm /= 10
 		dbm.save
 		log.info "SAVED " + m["matchId"].to_s
+		dbm.FetchReplay()
 	end
 
 	def self.GetTapiWinRate scope

@@ -50,4 +50,21 @@
         </tr>
     </table>
 	<div id="testgoldchart"></div>
+	<div id="testindividualchart"></div>
 </div>
+
+<h2>Creep score breakdown</h2>
+<table class="table table-bordered">
+	<th class="namecell">Player</th>
+	<th class="namecell">5min</th>
+	<th class="namecell">10min</th>
+	<th class="namecell">15min</th>
+<% @creepscorearray.each do |cs| %>
+	<tr>
+		<td><%= cs[:player] %></td>
+		<% cs[:data].each do |d| %>
+			<td><%= d[:lasthits] %>/<%= d[:denies] %></td>
+		<% end %>
+	</tr>
+<% end %>
+</table>

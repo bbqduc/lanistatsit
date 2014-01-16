@@ -29,14 +29,49 @@ class MatchesController < ApplicationController
 		gon.damagechartdata = CreatePieChartData @match
 		gon.radiant_timeseries = []
 		gon.dire_timeseries = []
+		gon.timeseries = []
 		@match.match_participations.each do |mp|
+			tmpobject = {};
+			tmpobject[:player] = mp.player.accountid == 0 ? mp.hero.name : mp.player.name
+			tmpobject[:gold] = []
+			tmpobject[:xp] = []
+			tmpobject[:lasthits] = []
+			tmpobject[:denies] = []
+			mp.time_series.each do |ts|
+				tmpobject[:gold] << ts.gold
+				tmpobject[:xp] << ts.xp
+				tmpobject[:lasthits] << ts.lasthits
+				tmpobject[:denies] << ts.denies
+			end
 			if mp.radiant
+				tmpobject[:radiant] = true
 				gon.radiant_timeseries << mp.time_series
 			else
+				tmpobject[:radiant] = false
 				gon.dire_timeseries << mp.time_series
 			end
+			gon.timeseries << tmpobject
 		end
 		@awards = CalcAwards @match
+		@creepscorearray = GetCreepScoreArray @match
+	end
+	def GetCreepScoreArray match
+		ret = []
+		match.match_participations.each do |mp|
+			tmp = {:player => mp.player.accountid == 0 ? mp.hero.name : mp.player.name, :data => []}
+			[5, 10, 15].each do |i|
+				if mp.time_series.count >= i
+					tmp[:data] << {:lasthits => mp.time_series[i].lasthits, :denies => mp.time_series[i].denies}
+				end
+			end
+			ret << tmp
+		end
+		begin
+			tmp = ret.sort { |x,y| x[:data][0][:lasthits] <=> y[:data][0][:lasthits] }.reverse!
+			return tmp
+		rescue
+			return ret
+		end
 	end
 	def CreatePieChartData match
 		participations = match.match_participations

@@ -14,11 +14,11 @@
 	var drawGoldTimeSeries = function(svgid, title)
 {
 	var tmpseries = [];
-	for(var i in gon.radiant_timeseries[0])
+	var timeserieslen = gon.timeseries[0].gold.length;
+	for(var i = 0; i < 10; i++)
 	{
-		var radsum = gon.radiant_timeseries.reduce(function(a,b) { return a + b[i][keyvalue] }, 0);
-		var diresum = gon.dire_timeseries.reduce(function(a,b) { return a + b[i][keyvalue] }, 0);
-		arr.push (radsum - diresum);
+		tmpseries.push( { name: gon.timeseries[i].player,
+				  data: gon.timeseries[i].gold } );
 	}
 
 $(svgid).highcharts({
@@ -60,14 +60,7 @@ $(svgid).highcharts({
                     fillOpacity: 0.5
                 }
             },
-            series: [{
-                name: 'Total Gold Earned',
-                data: data[0]
-            },
-	    {
-                name: 'Total XP Earned',
-                data: data[1]
-            }]
+            series: tmpseries
         });
 }
 
@@ -184,6 +177,7 @@ $(svgid).highcharts({
 		var golddiffdata = getDiffChartData("gold");
 		var xpdiffdata = getDiffChartData("xp");
 		drawTimeSeries([golddiffdata, xpdiffdata], "#testgoldchart", "Team difference over game time");
+		drawGoldTimeSeries("#testindividualchart", "Individual gold chart");
 	}
 
 $(document).ready(ready);
