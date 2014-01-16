@@ -60,7 +60,7 @@ class Match < ActiveRecord::Base
 			return false
 		end
 
-		steamapikey="SUPERSECRETLOL"
+		steamapikey=IO.read Rails.root.join("steamapikey")
 		url = "https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/V001/?match_id=" + matchid.to_s + "&key=" + steamapikey
 		c = Curl::Easy.new url
 		c.perform
