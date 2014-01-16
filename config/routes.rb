@@ -1,7 +1,12 @@
 Hello::Application.routes.draw do
   get "welcome/index"
 
-  resources :matches, only: [:index, :show]
+  resources :matches do
+    get 'index'
+    get 'show'
+    get 'parse_status'
+    post 'upload_replay'
+  end
   resources :players, only: [:index, :show]
   resources :laniheroes
   resources :login do

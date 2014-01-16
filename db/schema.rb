@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140114121216) do
+ActiveRecord::Schema.define(version: 20140116095533) do
 
   create_table "heros", force: true do |t|
     t.string   "name"
@@ -73,6 +73,8 @@ ActiveRecord::Schema.define(version: 20140114121216) do
     t.boolean  "tapiwin"
     t.integer  "kills",                  default: 0
     t.integer  "avg_gpm",                default: 0
+    t.string   "replay_path"
+    t.boolean  "replay_parsed"
   end
 
   add_index "matches", ["matchid"], name: "index_matches_on_matchid", unique: true
