@@ -1,0 +1,31 @@
+<h2>Radiant <%= match.radiant_win ? "(Winner)" : "" %></h2>
+<table class="table table-bordered">
+	<th class="namecell">Player</th>
+	<th class="namecell">Hero</th>
+	<th>Kills</th>
+	<th>Deaths</th>
+	<th>Assists</th>
+	<th>TFC</th>
+	<th>GPM</th>
+	<th>Hero Damage</th>
+	<th>Tower Damage</th>
+<% (0..4).each do |i| %>
+	<%= render match.match_participations[i] %>
+<% end %>
+</table>
+
+<h2>Dire <%= match.radiant_win ? "" : "(Winner)"%></h2>
+<table class="table table-bordered">
+	<th class="namecell">Player</th>
+	<th class="namecell">Hero</th>
+	<th>Kills</th>
+	<th>Deaths</th>
+	<th>Assists</th>
+	<th>TFC</th>
+	<th>GPM</th>
+	<th>Hero Damage</th>
+	<th>Tower Damage</th>
+<% (5..9).each do |i| %>
+	<%= render match.match_participations[i] %>
+<% end %>
+</table>

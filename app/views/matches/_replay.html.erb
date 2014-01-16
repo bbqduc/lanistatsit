@@ -1,0 +1,22 @@
+<%= content_tag :div, id: "matchdata", data: {matchid: match.id} do %>
+	<!--Hack to get matchid to javascript-->
+<% end %>
+<h1>Replay</h1>
+<div class="well">
+	<% if match.replay_path %>
+		<% if match.replay_parsed %>
+			<%= button_to "Download replay",
+				match.UrlForReplay,
+				:method => :get,
+				:class => "btn btn-primary"
+			%>
+		<% else %>
+			<h4 id="parse_progress">Parsing in progress</h4>
+		<% end %>
+	<% else %>
+		<%= form_tag match_upload_replay_path(match.id), multipart: true do %>
+			<%= file_field_tag "file" %><br/>
+			<%= button_tag "Upload replay", class: "btn btn-primary" %>
+		<% end %>
+	<% end %>
+</div>

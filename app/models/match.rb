@@ -35,25 +35,6 @@ class Match < ActiveRecord::Base
 		self.ParseReplayFile rep_path
 	end
 
-	def ParseReplayFile path
-		bin_path = Rails.root.join('db', 'replay_parser')
-		cmd = "bzcat " + path.to_s + " | " + bin_path.to_s
-		jsonstring = ""
-		begin
-			PTY.spawn(cmd) do |stdin, stdout, pid|
-			begin
-				stdin.each { |line| jsonstring += line}
-			rescue Errno::EIO
-				puts "Errno::EIO error"
-			end
-			end
-		rescue
-			puts "Child process exited"
-		end
-		o = JSON.parse jsonstring
-		self.ProcessReplayInfo o
-	end
-
 	def self.GetNewTapiMatches
 		matchids = []
 		Player.tapiplayers.each do |p|
@@ -79,7 +60,9 @@ class Match < ActiveRecord::Base
 		c = Curl::Easy.new url
 		c.perform
 		s = c.body_str
-		IO.write Rails.root.join('db', 'fetched', matchid.to_s + ".json"), s
+		replay_path=Rails.root.join('public', 'replays')
+		FileUtils.mkdir(replay_path) unless File.directory? replay_path
+		IO.write Rails.root.join(replay_path, matchid.to_s + ".json"), s
 		o = JSON.parse s
 		InsertMatchFromWebAPI o, Logger.new(STDOUT)
 		return true
@@ -261,6 +244,8 @@ class Match < ActiveRecord::Base
 		info.each do |i|
 			hero = Hero.find_by heroid: i["hero"]
 			mp = mps.find_by hero_id: hero.id
+			return false unless mp
+
 			i["gold"].each_index do |j|
 				TimeSeries.create(
 					:match_participation_id => mp.id,
@@ -272,6 +257,12 @@ class Match < ActiveRecord::Base
 				);
 			end
 		end
+    return true
+	end
+
+	def UrlForReplay
+		path = Pathname.new(self.replay_path)
+		File.join('/replays', path.basename)
 	end
 end
 
