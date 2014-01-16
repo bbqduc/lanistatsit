@@ -1,17 +1,4 @@
 (function () {
-function calc(a,b) { return a + b[i][keyvalue]; }
-
-var getDiffChartData = function(keyvalue)
-{
-	var arr = [];
-	for(var i in gon.radiant_timeseries[0])
-	{
-		var radsum = gon.radiant_timeseries.reduce(calc, 0);
-		var diresum = gon.dire_timeseries.reduce(calc, 0);
-		arr.push (radsum - diresum);
-	}
-	return arr;
-};
 
 var drawGoldTimeSeries = function(svgid, title)
 {
@@ -66,8 +53,14 @@ var drawGoldTimeSeries = function(svgid, title)
         });
 }
 
-var drawTimeSeries = function(data, svgid, title)
+var drawTimeSeries = function(svgid, title)
 {
+	var xpdata = [], golddata=[];
+	for(var i in gon.radiant_timeseries.gold)
+	{
+		golddata.push(gon.radiant_timeseries.gold[i] - gon.dire_timeseries.gold[i])
+		xpdata.push(gon.radiant_timeseries.xp[i] - gon.dire_timeseries.xp[i])
+	}
 	$(svgid).highcharts({
             chart: {
                 type: 'areaspline'
@@ -109,66 +102,14 @@ var drawTimeSeries = function(data, svgid, title)
             },
             series: [{
                 name: 'Total Gold Earned',
-                data: data[0]
+                data: golddata
             },
 	    {
                 name: 'Total XP Earned',
-                data: data[1]
+                data: xpdata
             }]
         });
 }
-
-var drawTimeSeries = function(data, svgid, title)
-{
-	$(svgid).highcharts({
-		chart: {
-			type: 'areaspline'
-		},
-		title: {
-			text: title
-		},
-		legend: {
-			layout: 'vertical',
-			align: 'left',
-			verticalAlign: 'top',
-			x: 150,
-			y: 100,
-			floating: true,
-			borderWidth: 1,
-			backgroundColor: '#FFFFFF'
-		},
-		xAxis: {
-			title: {
-				text: 'Minute'
-			}
-		},
-		yAxis: {
-			title: {
-				text: 'Gold'
-			}
-		},
-		tooltip: {
-			shared: true,
-			valueSuffix: ''
-		},
-		credits: {
-			enabled: false
-		},
-		plotOptions: {
-			areaspline: {
-				fillOpacity: 0.5
-			}
-		},
-		series: [{
-			name: 'Total Gold Earned',
-			data: data[0]
-		},
-		{
-			name: 'Total XP Earned',
-			data: data[1]
-		}]
-	});
-};
 
 var drawPieChart = function(origdata, valuekey, svgid, title)
 {
@@ -228,9 +169,7 @@ var ready = function(){
 	drawPieChart(gon.damagechartdata.dire, "towerdamage", "#diretowerdamagechart", "Dire Tower Damage");
 	drawPieChart(gon.damagechartdata.dire, "gold", "#diregoldchart", "Dire Gold");
 
-	var golddiffdata = getDiffChartData("gold");
-	var xpdiffdata = getDiffChartData("xp");
-	drawTimeSeries([golddiffdata, xpdiffdata], "#testgoldchart", "Team difference over game time");
+	drawTimeSeries("#testgoldchart", "Team difference over game time");
 	drawGoldTimeSeries("#testindividualchart", "Individual gold chart");
 
 };

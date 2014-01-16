@@ -29,9 +29,15 @@ class MatchesController < ApplicationController
 	def show
 		@match = Match.find params[:id]
 		gon.damagechartdata = CreatePieChartData @match
-		gon.radiant_timeseries = []
-		gon.dire_timeseries = []
+		gon.radiant_timeseries = {:gold => [], :xp => []}
+		gon.dire_timeseries = {:gold => [], :xp => []}
 		gon.timeseries = []
+		@match.match_participations[0].time_series.each do |ts|
+			gon.radiant_timeseries[:gold].push 0
+			gon.dire_timeseries[:gold].push 0
+			gon.radiant_timeseries[:xp].push 0
+			gon.dire_timeseries[:xp].push 0
+		end
 		@match.match_participations.each do |mp|
 			tmpobject = {};
 			tmpobject[:player] = mp.player.accountid == 0 ? mp.hero.name : mp.player.name
@@ -44,14 +50,15 @@ class MatchesController < ApplicationController
 				tmpobject[:xp] << ts.xp
 				tmpobject[:lasthits] << ts.lasthits
 				tmpobject[:denies] << ts.denies
+				if mp.radiant
+					gon.radiant_timeseries[:gold][ts.minute] += ts.gold
+					gon.radiant_timeseries[:xp][ts.minute] += ts.xp
+				else
+					gon.dire_timeseries[:gold][ts.minute] += ts.gold
+					gon.dire_timeseries[:xp][ts.minute] += ts.xp
+				end
 			end
-			if mp.radiant
-				tmpobject[:radiant] = true
-				gon.radiant_timeseries << mp.time_series
-			else
-				tmpobject[:radiant] = false
-				gon.dire_timeseries << mp.time_series
-			end
+			tmpobject[:radiant] = mp.radiant
 			gon.timeseries << tmpobject
 		end
 		@awards = CalcAwards @match
