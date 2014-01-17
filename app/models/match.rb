@@ -37,7 +37,7 @@ class Match < ActiveRecord::Base
 			end
 		end
 		
-		self.ParseReplayFile rep_path
+		ReplayParser.new.perform self.id rep_path
 	end
 
 	def self.GetNewTapiMatches
